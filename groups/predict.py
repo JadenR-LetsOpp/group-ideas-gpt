@@ -7,14 +7,11 @@ from .db import insert_or_update_progress
 
 client = openai.Client(api_key=Config.OPENAI)
 
-def generate_prompt(ideas, question, batch_num, total_batches):
-    """Generate the clustering prompt for a batch of ideas."""
-    return f"""
-    Dit is batch {batch_num} van {total_batches}. Je krijgt een dataset met ID's en ideeën gebaseerd op de vraag: {question}. Hier zijn de ideeën: {' '.join(ideas)}.
-    """
+def generate_prompt(ideas, question):
+    return f"Je krijgt een dataset ideeën gebaseerd op de vraag: {question}. Hier zijn de ideeën: {' '.join(ideas)}."
 
 def cluster_ideas(ideas, apq_id, version, question):
-    prompt = generate_prompt(ideas, question, 1, 1)
+    prompt = generate_prompt(ideas, question)
         
     response = client.chat.completions.create(
         model="gpt-4o", 
