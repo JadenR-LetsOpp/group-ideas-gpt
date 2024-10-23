@@ -1,6 +1,5 @@
 from .config import Config
 import openai
-from .db import insert_or_update_progress
 
 client = openai.Client(api_key=Config.OPENAI)
 

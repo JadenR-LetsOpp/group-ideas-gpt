@@ -59,11 +59,24 @@ def insert_in_db(summary, apq_id):
 
         mycursor = mydb.cursor()
 
-
         now = datetime.now()
         created = now.strftime("%Y/%m/%d %H:%M:%S")
-        sqlInsert = f"INSERT INTO group_ideas_summary (apq_id, created, summary) VALUES ({apq_id}, {created}, {summary});"
-        mycursor.execute(sqlInsert, sqlInsert)
+
+        # Check if row already exists for the apq_id
+        sqlSelect = "SELECT * FROM group_idea_summary WHERE apq_id = %s"
+        valSelect = (apq_id,)
+        mycursor.execute(sqlSelect, valSelect)
+        existing_row = mycursor.fetchone()
+
+        if existing_row:
+            sqlUpdate = "UPDATE group_idea_summary SET created = %s, summary = %s WHERE apq_id = %s"
+            valUpdate = (created, summary, apq_id)
+            mycursor.execute(sqlUpdate, valUpdate)
+        else:
+            sqlInsert = "INSERT INTO group_idea_summary (apq_id, created, summary) VALUES (%s, %s, %s)"
+            valInsert = (apq_id, created, summary)
+            mycursor.execute(sqlInsert, valInsert)
+
         mydb.commit()
         mycursor.close()
         mydb.close()
