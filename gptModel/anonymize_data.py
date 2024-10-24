@@ -2,7 +2,7 @@ import pandas as pd
 import spacy
 import re
 
-nlp = spacy.load('nl_core_news_lg-3.6.0')
+nlp = spacy.load('gptModel/nl_core_news_lg-3.6.0')
 
 def anonymize_text_data(df, text_column):
    
